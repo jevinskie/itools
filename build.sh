@@ -33,12 +33,14 @@ mkdir -p ${ITOOLS_PREFIX}/include ${ITOOLS_PREFIX}/lib ${ITOOLS_PREFIX}/lib/pkgc
 
 # export PATH=$PWD/wrappers:$PATH
 
+BROOT=$(brew --prefix)/opt
+
 # export CC=static-clang
 # export CXX=static-clang++
-export CFLAGS="-O0 -g"
+export CFLAGS="-O0 -g -I ${ITOOLS_PREFIX}/include"
 export CXXFLAGS="${CFLAGS}"
 # export LDFLAGS="-all-static -mmacosx-version-min=10.7"
-export PKG_CONFIG_PATH="${ITOOLS_PREFIX}/lib/pkgconfig:$(brew --prefix libusb)/lib/pkgconfig:$(brew --prefix libxml2)/lib/pkgconfig:$(brew --prefix libzip)/lib/pkgconfig:$(brew --prefix zlib)/lib/pkgconfig:$(brew --prefix curl)/lib/pkgconfig:$(brew --prefix openssl)/lib/pkgconfig:$(brew --prefix libtasn1)/lib/pkgconfig:$(brew --prefix gnutls)/lib/pkgconfig"
+export PKG_CONFIG_PATH="${ITOOLS_PREFIX}/lib/pkgconfig:${BROOT}/libusb/lib/pkgconfig:${BROOT}/libxml2/lib/pkgconfig:${BROOT}/libzip/lib/pkgconfig:${BROOT}/zlib/lib/pkgconfig:${BROOT}/curl/lib/pkgconfig:${BROOT}/openssl/lib/pkgconfig:${BROOT}/libtasn1/lib/pkgconfig:${BROOT}/gnutls/lib/pkgconfig"
 
 echo CC: ${CC:-NOT_SET}
 echo CXX: ${CXX:-NOT_SET}
@@ -55,6 +57,8 @@ pushd src
 			git clone ${url}
 		fi
 		pushd ${name}
+			git pull
+			git clean -fdx
 			NOCONFIGURE=1 ./autogen.sh
 			configure_flags=''
 			if [[ "${name}" = "libplist" ]]; then
