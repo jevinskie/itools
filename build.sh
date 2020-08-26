@@ -10,10 +10,12 @@ repo_urls=(
 	https://github.com/libimobiledevice/libplist
 	https://github.com/libimobiledevice/libusbmuxd
 	https://github.com/libimobiledevice/libimobiledevice
+	https://github.com/libimobiledevice/usbmuxd
 	https://github.com/libimobiledevice/libirecovery
 	https://github.com/libimobiledevice/idevicerestore
 	https://github.com/libimobiledevice/ideviceinstaller
 	https://github.com/libimobiledevice/libideviceactivation
+	https://github.com/libimobiledevice/ifuse
 )
 
 # --build-bottle gives us -march=core2 instead of the default -march=native
@@ -40,7 +42,8 @@ BROOT=$(brew --prefix)/opt
 export CFLAGS="-O0 -g -I ${ITOOLS_PREFIX}/include"
 export CXXFLAGS="${CFLAGS}"
 # export LDFLAGS="-all-static -mmacosx-version-min=10.7"
-export PKG_CONFIG_PATH="${ITOOLS_PREFIX}/lib/pkgconfig:${BROOT}/libusb/lib/pkgconfig:${BROOT}/libxml2/lib/pkgconfig:${BROOT}/libzip/lib/pkgconfig:${BROOT}/zlib/lib/pkgconfig:${BROOT}/curl/lib/pkgconfig:${BROOT}/openssl/lib/pkgconfig:${BROOT}/libtasn1/lib/pkgconfig:${BROOT}/gnutls/lib/pkgconfig"
+# /usr/local/lib/pkgconfig/fuse.pc for OSXFUSE
+export PKG_CONFIG_PATH="${ITOOLS_PREFIX}/lib/pkgconfig:${BROOT}/libusb/lib/pkgconfig:${BROOT}/libxml2/lib/pkgconfig:${BROOT}/libzip/lib/pkgconfig:${BROOT}/zlib/lib/pkgconfig:${BROOT}/curl/lib/pkgconfig:${BROOT}/openssl/lib/pkgconfig:${BROOT}/libtasn1/lib/pkgconfig:${BROOT}/gnutls/lib/pkgconfig:/usr/local/lib/pkgconfig"
 
 echo CC: ${CC:-NOT_SET}
 echo CXX: ${CXX:-NOT_SET}
