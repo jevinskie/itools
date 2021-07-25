@@ -27,7 +27,8 @@ repo_urls=(
 # brew install --build-bottle xz
 # brew install --build-bottle libusb
 
-export ITOOLS_PREFIX=${PWD}/prefix
+# export ITOOLS_PREFIX=${PWD}/prefix
+export ITOOLS_PREFIX=~/base/itools
 mkdir -p ${ITOOLS_PREFIX}/include ${ITOOLS_PREFIX}/lib ${ITOOLS_PREFIX}/lib/pkgconfig
 
 # ln -fs $(greadlink -f wrappers/static-wrap.pl) wrappers/static-clang
@@ -35,14 +36,12 @@ mkdir -p ${ITOOLS_PREFIX}/include ${ITOOLS_PREFIX}/lib ${ITOOLS_PREFIX}/lib/pkgc
 
 # export PATH=$PWD/wrappers:$PATH
 
-BROOT=$(brew --prefix)/opt
-
 # export CC=static-clang
 # export CXX=static-clang++
-export CFLAGS="-O0 -g -I ${ITOOLS_PREFIX}/include"
-export CXXFLAGS="${CFLAGS}"
+# export CFLAGS="-O0 -g -I ${ITOOLS_PREFIX}/include"
+# export CXXFLAGS="${CFLAGS}"
 # export LDFLAGS="-all-static -mmacosx-version-min=10.7"
-export PKG_CONFIG_PATH="${ITOOLS_PREFIX}/lib/pkgconfig:${BROOT}/libusb/lib/pkgconfig:${BROOT}/libxml2/lib/pkgconfig:${BROOT}/libzip/lib/pkgconfig:${BROOT}/zlib/lib/pkgconfig:${BROOT}/curl/lib/pkgconfig:${BROOT}/openssl@1.1/lib/pkgconfig:${BROOT}/libtasn1/lib/pkgconfig:${BROOT}/gnutls/lib/pkgconfig:${BROOT}/curl/lib/pkgconfig:${BROOT}/lib/pkgconfig"
+# export PKG_CONFIG_PATH="${ITOOLS_PREFIX}/lib/pkgconfig:${BROOT}/libusb/lib/pkgconfig:${BROOT}/libxml2/lib/pkgconfig:${BROOT}/libzip/lib/pkgconfig:${BROOT}/zlib/lib/pkgconfig:${BROOT}/curl/lib/pkgconfig:${BROOT}/openssl@1.1/lib/pkgconfig:${BROOT}/libtasn1/lib/pkgconfig:${BROOT}/gnutls/lib/pkgconfig:${BROOT}/curl/lib/pkgconfig:${BROOT}/lib/pkgconfig"
 
 echo CC: ${CC:-NOT_SET}
 echo CXX: ${CXX:-NOT_SET}
@@ -70,7 +69,7 @@ pushd src
 				configure_flags='--enable-debug-code --without-cython'
 			fi
 			./configure --prefix=${ITOOLS_PREFIX} ${=configure_flags}
-			make -j8
+			make -j4
 			make install
 		popd
 	done
