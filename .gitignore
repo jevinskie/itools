@@ -1,2 +1,6 @@
 prefix/
 src/
+cpanm
+.vscode/
+wrappers/static-clang
+wrappers/static-clang++
