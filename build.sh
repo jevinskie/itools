@@ -32,18 +32,27 @@ export ITOOLS_PREFIX=${PWD}/prefix
 rm -rf ${ITOOLS_PREFIX}
 mkdir -p ${ITOOLS_PREFIX}/include ${ITOOLS_PREFIX}/lib ${ITOOLS_PREFIX}/lib/pkgconfig
 
-# ln -fs $(greadlink -f wrappers/static-wrap.pl) wrappers/static-clang
-# ln -fs $(greadlink -f wrappers/static-wrap.pl) wrappers/static-clang++
-
-# export PATH=$PWD/wrappers:$PATH
-
 BROOT=$(brew --prefix)/opt
 
 brew update
-brew install libtool autoconf automake pkgconfig libxml2 libzip xz zlib libusb gnutls libtasn1 curl mbedtls
+brew install coreutils libtool autoconf automake pkgconfig libxml2 libzip xz zlib libusb gnutls libtasn1 curl mbedtls perl
 
-# export CC=static-clang
-# export CXX=static-clang++
+ln -fs $(greadlink -f wrappers/static-wrap.pl) wrappers/static-clang
+ln -fs $(greadlink -f wrappers/static-wrap.pl) wrappers/static-clang++
+
+export PATH="${PWD}/wrappers:${PATH}"
+
+BPERL_BIN=$(brew --prefix)/bin
+BPERL=${BPERL_BIN}/perl
+${BROOT}/curl/bin/curl -L https://cpanmin.us/ -o cpanm
+chmod +x cpanm
+
+export PATH="${BPERL_BIN}:${PATH}"
+
+./cpanm Modern::Perl IPC::Run
+
+export CC=static-clang
+export CXX=static-clang++
 export CFLAGS="-O0 -g -I${ITOOLS_PREFIX}/include"
 export CXXFLAGS="${CFLAGS}"
 export LDFLAGS="-L${ITOOLS_PREFIX}/lib"
@@ -72,10 +81,10 @@ pushd src
 			git pull
 			NOCONFIGURE=1 ./autogen.sh
 			configure_flags='--enable-debug'
-			if [[ "${name}" = "libplist" ]]; then
-				configure_flags='--without-cython'
-			elif [[ "${name}" = "libimobiledevice" ]]; then
-				configure_flags='--without-cython'
+			if [[ "${name}" == "libplist" ]]; then
+				configure_flags="${configure_flags} --without-cython"
+			elif [[ "${name}" == "libimobiledevice" ]]; then
+				configure_flags="${configure_flags} --without-cython"
 			fi
 			./configure --prefix=${ITOOLS_PREFIX} ${=configure_flags}
 			make -j $(NPROC)
