@@ -73,9 +73,9 @@ pushd src
 			NOCONFIGURE=1 ./autogen.sh
 			configure_flags='--enable-debug'
 			if [[ "${name}" = "libplist" ]]; then
-				configure_flags='--without-cython'
+				configure_flags="${configure_flags} --without-cython"
 			elif [[ "${name}" = "libimobiledevice" ]]; then
-				configure_flags='--without-cython'
+				configure_flags="${configure_flags} --without-cython"
 			fi
 			./configure --prefix=${ITOOLS_PREFIX} ${=configure_flags}
 			make -j $(NPROC)
