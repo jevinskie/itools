@@ -8,6 +8,7 @@ set -o xtrace
 
 repo_urls=(
 	https://github.com/libimobiledevice/libplist
+	https://github.com/libimobiledevice/libimobiledevice-glue
 	https://github.com/libimobiledevice/libusbmuxd
 	https://github.com/libimobiledevice/libimobiledevice
 	https://github.com/libimobiledevice/usbmuxd
