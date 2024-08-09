@@ -8,6 +8,7 @@ set -o xtrace
 
 repo_urls=(
 	https://github.com/libimobiledevice/libplist
+	https://github.com/libimobiledevice/libtatsu
 	https://github.com/libimobiledevice/libimobiledevice-glue
 	https://github.com/libimobiledevice/libusbmuxd
 	https://github.com/libimobiledevice/libimobiledevice
@@ -38,10 +39,11 @@ mkdir -p ${ITOOLS_PREFIX}/include ${ITOOLS_PREFIX}/lib ${ITOOLS_PREFIX}/lib/pkgc
 
 # export PATH=$PWD/wrappers:$PATH
 
-BROOT=$(brew --prefix)/opt
+BROOT=$(brew --prefix)
+BOPT="${BROOT}/opt"
 
 brew update
-brew install libtool autoconf automake pkgconfig libxml2 libzip xz zlib libusb gnutls libtasn1 curl mbedtls
+brew install libtool autoconf automake pkgconfig libxml2 libzip xz zlib libusb gnutls libtasn1 curl mbedtls readline
 
 # export CC=static-clang
 # export CXX=static-clang++
@@ -49,7 +51,7 @@ export CFLAGS="-O0 -g -I${ITOOLS_PREFIX}/include"
 export CXXFLAGS="${CFLAGS}"
 export LDFLAGS="-L${ITOOLS_PREFIX}/lib"
 # export LDFLAGS="-all-static -mmacosx-version-min=10.7"
-export PKG_CONFIG_PATH="${ITOOLS_PREFIX}/lib/pkgconfig:${BROOT}/libusb/lib/pkgconfig:${BROOT}/libxml2/lib/pkgconfig:${BROOT}/libzip/lib/pkgconfig:${BROOT}/xz/lib/pkgconfig:${BROOT}/zlib/lib/pkgconfig:${BROOT}/curl/lib/pkgconfig:${BROOT}/mbedtls/lib/pkgconfig:${BROOT}/openssl@3/lib/pkgconfig:${BROOT}/libtasn1/lib/pkgconfig:${BROOT}/gnutls/lib/pkgconfig:${BROOT}/lib/pkgconfig"
+export PKG_CONFIG_PATH="${ITOOLS_PREFIX}/lib/pkgconfig:${BOPT}/libusb/lib/pkgconfig:${BOPT}/libxml2/lib/pkgconfig:${BOPT}/libzip/lib/pkgconfig:${BOPT}/xz/lib/pkgconfig:${BOPT}/zlib/lib/pkgconfig:${BOPT}/curl/lib/pkgconfig:${BOPT}/mbedtls/lib/pkgconfig:${BOPT}/openssl@3/lib/pkgconfig:${BOPT}/libtasn1/lib/pkgconfig:${BOPT}/gnutls/lib/pkgconfig:${BOPT}/readline/lib/pkgconfig:${BROOT}/lib/pkgconfig"
 
 echo CC: ${CC:-NOT_SET}
 echo CXX: ${CXX:-NOT_SET}
@@ -72,11 +74,11 @@ pushd src
 			git clean -fdx
 			git pull
 			NOCONFIGURE=1 ./autogen.sh
-			configure_flags='--enable-debug'
+			configure_flags=""
 			if [[ "${name}" = "libplist" ]]; then
-				configure_flags="${configure_flags} --without-cython"
+				configure_flags="${configure_flags} --without-cython --enable-debug"
 			elif [[ "${name}" = "libimobiledevice" ]]; then
-				configure_flags="${configure_flags} --without-cython"
+				configure_flags="${configure_flags} --without-cython --enable-debug"
 			fi
 			./configure --prefix=${ITOOLS_PREFIX} ${=configure_flags}
 			make -j $(NPROC)
