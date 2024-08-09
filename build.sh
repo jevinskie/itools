@@ -28,7 +28,8 @@ repo_urls=(
 # brew install --build-bottle xz
 # brew install --build-bottle libusb
 
-export ITOOLS_PREFIX=${PWD}/prefix
+# export ITOOLS_PREFIX=${PWD}/prefix
+export ITOOLS_PREFIX=~/base/limd
 rm -rf ${ITOOLS_PREFIX}
 mkdir -p ${ITOOLS_PREFIX}/include ${ITOOLS_PREFIX}/lib ${ITOOLS_PREFIX}/lib/pkgconfig
 
