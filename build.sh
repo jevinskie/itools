@@ -17,7 +17,7 @@ repo_urls=(
 	https://github.com/libimobiledevice/idevicerestore
 	https://github.com/libimobiledevice/ideviceinstaller
 	https://github.com/libimobiledevice/libideviceactivation
-	https://github.com/libimobiledevice/ifuse
+	# https://github.com/libimobiledevice/ifuse
 )
 
 # --build-bottle gives us -march=core2 instead of the default -march=native
